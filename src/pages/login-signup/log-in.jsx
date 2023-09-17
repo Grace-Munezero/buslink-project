@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import './log-in.css';
-import { useNavigate } from 'react-router-dom';
-import jwt_decode from 'jwt-decode'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import BASE_URL from '../../Api';
+import React, { useEffect, useState } from "react";
+import "./log-in.css";
+import { useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import BASE_URL from "../../Api";
 
 const Login = () => {
-  const initialValues = { email: '', password: '', role: '' };
+  const initialValues = { email: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [isSubmit, setIsSubmit] = useState(false);
   const [formErrors, setFormErrors] = useState({});
-
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -28,18 +27,15 @@ const Login = () => {
   const validate = (values) => {
     let errors = {};
     if (!values.email) {
-      errors.email = 'Email is required';
+      errors.email = "Email is required";
     }
     if (!values.password) {
-      errors.password = 'Password is required';
+      errors.password = "Password is required";
     }
     return errors;
   };
 
   useEffect(() => {
-    console.log('formValues', formValues);
-    console.log('formErrors', formErrors);
-
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       sendDataToBackend();
     }
@@ -47,64 +43,35 @@ const Login = () => {
 
   const sendDataToBackend = async () => {
     try {
-
-      const response = await fetch(`${BASE_URL}/api/v2/user/login`, {
-
-        method: 'POST',
+      const response = await fetch("login.php", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formValues),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to save data');
+        throw new Error("Failed to log in");
       }
-      toast('Successful login');
-      alert('Successful login');
-      const token = await response.json("");
-      const tokens= await token.token
-     
-   
-      localStorage.setItem('token', tokens);
-      
-      
-      var decoded = jwt_decode(tokens);
-      // console.log(decoded);
-const roles = await decoded.role
-// console.log("roles",roles)
-if(roles=="driver"){
 
-  navigate('/driver');
+      const data = await response.json();
 
-}
-else if(roles=="user"){
-  navigate('/book-here');
-
-}
-else{
-
-  navigate('/admin');
-
-}
-
-    
+      if (data.success) {
+        // Redirect to the booking page upon successful login
+        window.location.href = "/booking.php";
+      } else {
+        toast("Invalid credentials");
+      }
     } catch (error) {
-      
-       console.error('Error saving data:', error);
-     
-       toast('Invalid credentials');
-
+      console.error("Error saving data:", error);
+      toast("Invalid credentials");
     }
-
-   
   };
 
   const handleSignup = () => {
-    navigate('/signup');
+    navigate("/signup");
   };
-
-  console.log('Rendering Login component');
 
   return (
     <div className="login-center">
@@ -121,7 +88,9 @@ else{
                 value={formValues.email}
                 onChange={handleChange}
               />
-              {formErrors.email && <span className="error">{formErrors.email}</span>}
+              {formErrors.email && (
+                <span className="error">{formErrors.email}</span>
+              )}
               <input
                 type="password"
                 placeholder="Password"
@@ -130,7 +99,9 @@ else{
                 value={formValues.password}
                 onChange={handleChange}
               />
-              {formErrors.password && <span className="error">{formErrors.password}</span>}
+              {formErrors.password && (
+                <span className="error">{formErrors.password}</span>
+              )}
               <button type="submit">Login</button>
             </form>
             <span>or signin with</span>
@@ -146,9 +117,14 @@ else{
             <div className="intro-control__inner">
               <h2>Welcome Back!</h2>
               <p>
-                We are so excited to have you here. If you haven't already, create an account to get access to exclusive offers, rewards, and discounts.
+                We are so excited to have you here. If you haven't already,
+                Create an account to get access to exclusive offers, rewards,
+                and discounts.
               </p>
-              <button id="signin-btn" onClick={handleSignup}> Sign Up.</button>
+              <button id="signin-btn" onClick={handleSignup}>
+                {" "}
+                Sign Up.
+              </button>
             </div>
           </div>
         </div>

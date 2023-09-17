@@ -37,44 +37,41 @@ const Signup = () => {
     setIsSubmit(true);
   };
 
-  useEffect(
-    (e) => {
-      console.log("formValues:", formValues);
-      console.log("formErrors:", formErrors);
-      if (Object.keys(formErrors).length === 0 && isSubmit) {
-        if (formValues.password != ConfirmPassword) {
-          toast("password are not marching");
-        } else {
-          sendDataToBackend();
-        }
+  useEffect(() => {
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      if (formValues.password !== ConfirmPassword) {
+        toast("Passwords do not match");
+      } else {
+        sendDataToBackend();
       }
-    },
-    [formErrors]
-  );
+    }
+  }, [formErrors]);
 
   const sendDataToBackend = async () => {
     try {
-      const response = await fetch(
-        "https://better-bikini-tick.cyclic.cloud/api/v2/user/signup",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formValues),
-        }
-      );
+      const response = await fetch("login.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formValues),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to save data");
       }
 
-      alert("succefull signup");
+      const data = await response.json();
 
-      navigate("/login");
+      if (data.success) {
+        alert("Successful signup");
+        navigate("/login");
+      } else {
+        toast.error("Error saving data");
+      }
     } catch (error) {
       console.error("Error saving data:", error);
-      toast.error("Error saving data:");
+      toast.error("Error saving data");
     }
   };
 
@@ -138,7 +135,6 @@ const Signup = () => {
           </div>
         </div>
         <div className="intros-container">
-          {/* <pre>{JSON.stringify(formValues,undefined,2)}</pre> */}
           <div className="intro-control signup-intro">
             <div className="intro-control__inner">
               <h2>Welcome Back!</h2>
