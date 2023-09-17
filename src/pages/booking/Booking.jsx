@@ -14,7 +14,7 @@ const Booking = () => {
 
   const  getDataToBackendDriver = async () => {
     const YOUR_TOKEN = localStorage.getItem('token');
-    const response = await fetch('https://precious-tan-slug.cyclic.app/api/v2/booking/readAll', {
+    const response = await fetch('https://better-bikini-tick.cyclic.cloud/api/v2/booking/readAll', {
       method: 'GET',
       headers: {
         Authorization: `bearer ${YOUR_TOKEN}`,

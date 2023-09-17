@@ -30,7 +30,7 @@ const Messages = () => {
 
   const GetDataToBackend = async () => {
     const YOUR_TOKEN = localStorage.getItem('token');
-    const response = await fetch('https://fine-pink-earthworm.cyclic.app/api/v2/messages/readAll', {
+    const response = await fetch('https://better-bikini-tick.cyclic.cloud/api/v2/messages/readAll', {
       method: 'GET',
       headers: {
         Authorization: `bearer ${YOUR_TOKEN}`,

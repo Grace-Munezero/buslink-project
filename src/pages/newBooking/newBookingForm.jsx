@@ -58,7 +58,7 @@ const NewBookingForm = () => {
 
 
     try {
-      const response = await fetch('http://localhost:3100/api/v2/seats/seats', {
+      const response = await fetch('https://better-bikini-tick.cyclic.cloud/api/v2/seats/seats', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

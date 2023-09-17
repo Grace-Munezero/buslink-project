@@ -1,6 +1,6 @@
 
 
-const BASE_URL="https://precious-tan-slug.cyclic.app";
+const BASE_URL="https://better-bikini-tick.cyclic.cloud";
 
 // const BASE_URL="http://localhost:5000";
 
